@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit - SIKAPA</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="deposit-page">
+    <div class="deposit-container">
+        <!-- Header -->
+        <div class="page-header">
+            <button class="btn-back" onclick="goBack()">← Back</button>
+            <h1>💰 Confirm Deposit</h1>
+            <div style="width: 40px;"></div>
+        </div>
+
+        <!-- Page Content -->
+        <div class="page-content">
+            <div class="deposit-info">
+                <p>Send funds to the account below</p>
+                <p class="deposit-notice">Your deposit will be credited within 1 - 5 minutes</p>
+            </div>
+
+            <form id="depositForm" class="deposit-form">
+                <div class="form-section">
+                    <h3>📱 Send Deposit to this MOMO Number</h3>
+                    <div class="form-group">
+                        <label for="momoNumber">MOMO Number *</label>
+                        <input type="text" id="momoNumber" value="0553843255" readonly class="input-readonly">
+                    </div>
+                    <div class="form-group">
+                        <label for="momoName">MOMO Name *</label>
+                        <input type="text" id="momoName" value="Emmanuel Mawufemor" readonly class="input-readonly">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="senderName">Name of Sender *</label>
+                        <input type="text" id="senderName" placeholder="Enter the Sender Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="senderNumber">Sender Number *</label>
+                        <input type="tel" id="senderNumber" placeholder="Enter the Sender Number" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <label>Amount *</label>
+                    <div class="amount-presets">
+                        <button type="button" class="amount-btn" onclick="setDepositAmount(30)">₵30</button>
+                        <button type="button" class="amount-btn" onclick="setDepositAmount(100)">₵100</button>
+                        <button type="button" class="amount-btn" onclick="setDepositAmount(250)">₵250</button>
+                        <button type="button" class="amount-btn" onclick="setDepositAmount(500)">₵500</button>
+                    </div>
+                    <input type="number" id="depositAmount" min="1" step="0.01" placeholder="or enter custom amount" required>
+                </div>
+
+                <div class="form-section">
+                    <label for="depositScreenshot">Upload Screenshot *</label>
+                    <div class="file-upload">
+                        <input type="file" id="depositScreenshot" accept="image/png,image/jpeg,image/gif" required>
+                        <p class="file-info" style="color: rgba(255, 255, 255, 0.6);">Click to upload or drag and drop</p>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Confirm Deposit</button>
+                <p id="depositError" class="error"></p>
+                <p id="depositSuccess" class="success"></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="database.js"></script>
+    <script>
+        let currentUser = null;
+
+        firebase.auth().onAuthStateChanged((user) => {
+            if (!user) {
+                window.location.href = 'index.html';
+            }
+            currentUser = user;
+        });
+
+        function goBack() {
+            window.location.href = 'dashboard.html';
+        }
+
+        function setDepositAmount(amount) {
+            document.getElementById('depositAmount').value = amount;
+            document.querySelectorAll('.amount-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        document.getElementById('depositForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const amount = parseFloat(document.getElementById('depositAmount').value);
+            const senderName = document.getElementById('senderName').value;
+            const senderNumber = document.getElementById('senderNumber').value;
+            const screenshot = document.getElementById('depositScreenshot').files[0];
+
+            try {
+                if (!screenshot) {
+                    throw new Error('Please upload a screenshot of the payment');
+                }
+                if (screenshot.size > 5 * 1024 * 1024) {
+                    throw new Error('Screenshot must be less than 5MB');
+                }
+
+                const formData = new FormData();
+                formData.append('amount', amount);
+                formData.append('senderName', senderName);
+                formData.append('senderNumber', senderNumber);
+                formData.append('screenshot', screenshot);
+
+                console.log('Submitting deposit:', { amount, senderName, senderNumber, screenshotSize: screenshot.size });
+
+                // For now, just show success - in production would send to backend
+                document.getElementById('depositSuccess').textContent = '✓ Deposit request submitted successfully! Your deposit will be credited within 1-5 minutes.';
+                document.getElementById('depositError').textContent = '';
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
+            } catch (error) {
+                document.getElementById('depositError').textContent = error.message;
+                document.getElementById('depositSuccess').textContent = '';
+            }
+        });
+
+        // File upload handler
+        const fileUpload = document.getElementById('depositScreenshot');
+        const fileUploadArea = fileUpload.parentElement;
+        
+        fileUpload.addEventListener('change', () => {
+            if (fileUpload.files.length > 0) {
+                const fileName = fileUpload.files[0].name;
+                const fileSize = (fileUpload.files[0].size / (1024 * 1024)).toFixed(2);
+                const fileInfo = fileUploadArea.querySelector('.file-info');
+                fileInfo.textContent = `✓ ${fileName} (${fileSize}MB)`;
+                fileInfo.style.color = '#00d4aa';
+            }
+        });
+        
+        fileUploadArea.addEventListener('click', () => fileUpload.click());
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.style.background = 'rgba(138, 43, 226, 0.3)';
+        });
+        fileUploadArea.addEventListener('dragleave', () => {
+            fileUploadArea.style.background = 'rgba(138, 43, 226, 0.05)';
+        });
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.style.background = 'rgba(138, 43, 226, 0.05)';
+            if (e.dataTransfer.files.length > 0) {
+                fileUpload.files = e.dataTransfer.files;
+                const event = new Event('change', { bubbles: true });
+                fileUpload.dispatchEvent(event);
+            }
+        });
+    </script>
+</body>
+</html>

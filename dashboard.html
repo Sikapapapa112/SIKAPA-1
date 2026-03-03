@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIKAPA - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dashboard-page">
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Loading your dashboard...</p>
+    </div>
+
+    <div class="dashboard-container" id="dashboardContent" style="opacity: 0; transition: opacity 0.3s ease;">
+        <!-- Header -->
+        <!-- Header -->
+        <div class="dashboard-header">
+            <h1>💎 SIKAPA</h1>
+            <div class="user-info">
+                <span id="userName">Welcome</span>
+                <button id="logoutBtn" class="btn btn-outline btn-sm">Logout</button>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+            <button class="tab-btn" data-tab="tasks">Tasks</button>
+            <button class="tab-btn" data-tab="referrals">Invite</button>
+            <button class="tab-btn" data-tab="profile">Me</button>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="dashboard-welcome">
+                <p class="card-label">Total Balance</p>
+                <h2 style="font-size: 42px; font-weight: 800; margin: 12px 0 0 0;" id="totalBalance">₵ 0.00</h2>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-success" onclick="window.location.href='deposit.html'">Deposit</button>
+                <button class="btn btn-warning" onclick="window.location.href='withdraw.html'">Withdraw</button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <p class="stat-label">Total Revenue</p>
+                    <h4 class="stat-value" id="totalRevenue">₵ 0.00</h4>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">Commission Today</p>
+                    <h4 class="stat-value" id="commissionToday">₵ 0.00</h4>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">Today's Earning</p>
+                    <h4 class="stat-value" id="todayEarning">₵ 0.00</h4>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">Recharge Amount</p>
+                    <h4 class="stat-value" id="rechargeAmount">₵ 0.00</h4>
+                </div>
+            </div>
+
+            <div class="transactions-section">
+                <h3>Recent Transactions</h3>
+                <div id="recentTransactions" class="transactions-list">
+                    <p class="empty-state">No transactions yet</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tasks Tab -->
+        <div id="tasks" class="tab-content">
+            <div class="tasks-header">
+                <h2>Quantify Tasks</h2>
+                <p class="tasks-subtitle">Complete tasks and earn rewards through tiers</p>
+            </div>
+
+            <div class="card" style="text-align: center;">
+                <p class="card-label">Withdrawable Amount</p>
+                <h3 id="withdrawableAmount">₵ 0.00</h3>
+            </div>
+
+            <div class="task-stats">
+                <div class="task-stat">
+                    <p>Tier Claimed Today</p>
+                    <h4 id="tierClaimedToday">0</h4>
+                </div>
+                <div class="task-stat">
+                    <p>Total Tier Earnings</p>
+                    <h4 id="totalTierEarnings">₵ 0.00</h4>
+                </div>
+            </div>
+
+            <div id="tiersContainer" class="tiers-container">
+                <!-- Tiers will be dynamically loaded here -->
+            </div>
+        </div>
+
+        <!-- Referrals Tab -->
+        <div id="referrals" class="tab-content">
+            <h2>Invite Friends</h2>
+            <p class="referrals-subtitle">Earn commission from referrals</p>
+
+            <div class="referral-code-section">
+                <p class="code-label">Your Referral Code</p>
+                <div class="code-box">
+                    <input type="text" id="referralCodeDisplay" readonly>
+                    <button class="btn btn-sm btn-primary" onclick="copyReferralCode()">Copy</button>
+                </div>
+            </div>
+
+            <div class="referral-link-section">
+                <p class="code-label">Referral Link</p>
+                <div class="code-box">
+                    <input type="text" id="referralLinkDisplay" readonly>
+                    <button class="btn btn-sm btn-primary" onclick="copyReferralLink()">Copy</button>
+                </div>
+            </div>
+
+            <div class="referral-stats">
+                <div class="referral-stat">
+                    <p>Friends Invited</p>
+                    <h4 id="friendsInvited">0</h4>
+                </div>
+                <div class="referral-stat">
+                    <p>Commission Earned</p>
+                    <h4 id="commissionEarned">₵ 0.00</h4>
+                </div>
+            </div>
+
+            <div class="share-buttons">
+                <div class="share-card" onclick="shareWhatsApp()">
+                    <div class="share-logo">📱</div>
+                    <div class="share-text">WhatsApp</div>
+                </div>
+                <div class="share-card" onclick="shareFacebook()">
+                    <div class="share-logo">👥</div>
+                    <div class="share-text">Facebook</div>
+                </div>
+                <div class="share-card" onclick="shareTwitter()">
+                    <div class="share-logo">🐦</div>
+                    <div class="share-text">Twitter</div>
+                </div>
+            </div>
+
+            <div class="invited-friends-section">
+                <h3>Invited Friends</h3>
+                <div id="invitedFriendsListContainer" class="invited-friends-list">
+                    <p class="empty-state">No referrals yet</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Tab -->
+        <div id="profile" class="tab-content">
+            <div class="profile-header">
+                <h2 id="profileName">User Profile</h2>
+                <p id="profileEmail">email@example.com</p>
+            </div>
+
+            <div class="profile-actions">
+                <button class="btn btn-success" onclick="window.location.href='deposit.html'">Deposit</button>
+                <button class="btn btn-warning" onclick="window.location.href='withdraw.html'">Withdraw</button>
+                <button class="btn btn-danger" id="adminBtn" style="display: none;" onclick="goToAdmin()">Admin</button>
+            </div>
+
+            <div class="profile-revenue">
+                <div class="revenue-stat">
+                    <p>Total Revenue</p>
+                    <h4 id="profileTotalRevenue">₵ 0.00</h4>
+                </div>
+                <div class="revenue-stat">
+                    <p>Commission Today</p>
+                    <h4 id="profileCommissionToday">₵ 0.00</h4>
+                </div>
+                <div class="revenue-stat">
+                    <p>Today's Earning</p>
+                    <h4 id="profileTodayEarning">₵ 0.00</h4>
+                </div>
+                <div class="revenue-stat">
+                    <p>Recharge Amount</p>
+                    <h4 id="profileRechargeAmount">₵ 0.00</h4>
+                </div>
+            </div>
+
+            <div class="account-information">
+                <h3>Account Information</h3>
+                <div class="info-row">
+                    <p class="info-label">Email Address</p>
+                    <p class="info-value" id="accountEmail">-</p>
+                </div>
+                <div class="info-row">
+                    <p class="info-label">User ID</p>
+                    <p class="info-value" id="accountUserID">-</p>
+                </div>
+                <div class="info-row">
+                    <p class="info-label">Member Since</p>
+                    <p class="info-value" id="accountMemberDate">-</p>
+                </div>
+            </div>
+
+            <div class="profile-settings">
+                <h3>Settings</h3>
+                <button class="btn btn-outline" onclick="showChangePasswordModal()">Change Password</button>
+                <button class="btn btn-danger" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Deposit Modal -->
+    <div id="depositModal" class="modal">
+        <div class="modal-content modal-deposit">
+            <div class="modal-header">
+                <button class="modal-back" onclick="closeDepositModal()">← Back</button>
+                <h2>💰 Confirm Deposit</h2>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="modal-deposit-info">
+                <p>Send funds to the account below</p>
+                <p class="deposit-notice">Your deposit will be credited within 1 - 5 minutes</p>
+            </div>
+            <form id="depositForm">
+                <div class="form-section">
+                    <h3>📱 Send Deposit to this MOMO Number</h3>
+                    <div class="form-group">
+                        <label for="momoNumber">MOMO Number *</label>
+                        <input type="text" id="momoNumber" value="0553843255" readonly class="input-readonly">
+                    </div>
+                    <div class="form-group">
+                        <label for="momoName">MOMO Name *</label>
+                        <input type="text" id="momoName" value="Emmanuel Mawufemor" readonly class="input-readonly">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="senderName">Name of Sender *</label>
+                        <input type="text" id="senderName" placeholder="Enter the Sender Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="senderNumber">Sender Number *</label>
+                        <input type="tel" id="senderNumber" placeholder="Enter the Sender Number" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <label>Amount *</label>
+                    <div class="amount-presets">
+                        <button type="button" class="amount-btn" onclick="setDepositAmount(30)">₵30</button>
+                        <button type="button" class="amount-btn" onclick="setDepositAmount(100)">₵100</button>
+                        <button type="button" class="amount-btn" onclick="setDepositAmount(250)">₵250</button>
+                        <button type="button" class="amount-btn" onclick="setDepositAmount(500)">₵500</button>
+                    </div>
+                    <input type="number" id="depositAmount" min="1" step="0.01" placeholder="or enter custom amount" required>
+                </div>
+
+                <div class="form-section">
+                    <label for="depositScreenshot">Upload Screenshot *</label>
+                    <div class="file-upload">
+                        <input type="file" id="depositScreenshot" accept="image/png,image/jpeg,image/gif" required>
+                        <p class="file-info">PNG, JPG, or GIF (max. 5MB)</p>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Confirm Deposit</button>
+                <p id="depositError" class="error"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div id="withdrawModal" class="modal">
+        <div class="modal-content modal-withdraw">
+            <div class="modal-header">
+                <button class="modal-back" onclick="closeWithdrawModal()">← Back</button>
+                <h2>💰 Withdraw</h2>
+                <div style="width: 40px;"></div>
+            </div>
+            <form id="withdrawForm">
+                <div class="form-section">
+                    <p class="card-label">Withdrawable Amount</p>
+                    <h3 id="withdrawableDisplay" style="font-size: 28px; color: #8a2be2; margin: 10px 0;">₵ 0.00</h3>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="withdrawMomoNumber">Mobile Money Number *</label>
+                        <input type="tel" id="withdrawMomoNumber" placeholder="e.g. 1234567890" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="withdrawMomoName">Mobile Money Name *</label>
+                        <input type="text" id="withdrawMomoName" placeholder="Enter your account name" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="networkProvider">Network Provider *</label>
+                        <select id="networkProvider" required>
+                            <option value="">Select Network</option>
+                            <option value="mtn">MTN</option>
+                            <option value="vodafone">Vodafone</option>
+                            <option value="airteltig">Airtel/TiG</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="withdrawAmount">Amount * (₵)</label>
+                        <input type="number" id="withdrawAmount" min="1" step="0.01" placeholder="Enter amount to withdraw" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Withdraw</button>
+                <p id="withdrawError" class="error"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Change Password</h2>
+                <button class="modal-close" onclick="closeChangePasswordModal()">×</button>
+            </div>
+            <form id="changePasswordForm">
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" placeholder="Enter current password" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" placeholder="Enter new password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmNewPassword">Confirm New Password</label>
+                    <input type="password" id="confirmNewPassword" placeholder="Confirm new password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Update Password</button>
+                <p id="changePasswordError" class="error"></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="database.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

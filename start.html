@@ -1,0 +1,315 @@
+<!-- SIKAPA Project Structure -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIKAPA - Project Index</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #08011f;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .tagline {
+            color: #999;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .link-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+        }
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        .link-card h3 {
+            margin-bottom: 8px;
+        }
+        .link-card p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        .file-list {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .file-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .file-item:last-child {
+            border-bottom: none;
+        }
+        .file-name {
+            font-family: monospace;
+            color: #667eea;
+            font-weight: 600;
+        }
+        .file-desc {
+            color: #666;
+            font-size: 13px;
+        }
+        .setup-steps {
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #38ef7d;
+        }
+        .step {
+            margin: 15px 0;
+            padding: 10px;
+        }
+        .step-num {
+            background: #38ef7d;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .important {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .important strong {
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💎 SIKAPA Platform</h1>
+        <p class="tagline">Complete Firebase-Based Earning & Rewards Platform</p>
+
+        <div class="section">
+            <h2>🚀 Quick Start</h2>
+            <div class="important">
+                <strong>⚠️ Important:</strong> Update <code>firebase-config.js</code> with your Firebase credentials before running the application!
+            </div>
+            <div class="links">
+                <a href="QUICKSTART.md" class="link-card">
+                    <h3>📋 Quick Start Guide</h3>
+                    <p>5-minute setup instructions</p>
+                </a>
+                <a href="README.md" class="link-card">
+                    <h3>📚 Full Documentation</h3>
+                    <p>Complete feature guide</p>
+                </a>
+                <a href="firebase-config.js" class="link-card">
+                    <h3>⚙️ Firebase Config</h3>
+                    <p>UPDATE THIS FILE FIRST!</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📱 Application Pages</h2>
+            <div class="links">
+                <a href="index.html" class="link-card">
+                    <h3>🔐 Login</h3>
+                    <p>User login page</p>
+                </a>
+                <a href="signup.html" class="link-card">
+                    <h3>📝 Sign Up</h3>
+                    <p>New account registration</p>
+                </a>
+                <a href="dashboard.html" class="link-card">
+                    <h3>📊 Dashboard</h3>
+                    <p>Main app (login required)</p>
+                </a>
+                <a href="admin.html" class="link-card">
+                    <h3>👨‍💼 Admin Portal</h3>
+                    <p>Admin dashboard (admin only)</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📁 Project Files</h2>
+            <div class="file-list">
+                <div class="file-item">
+                    <div class="file-name">📄 index.html</div>
+                    <div class="file-desc">User login page</div>
+                </div>
+                <div class="file-item">
+                    <div class="file-name">📄 signup.html</div>
+                    <div class="file-desc">User registration page</div>
+                </div>
+                <div class="file-item">
+                    <div class="file-name">📄 dashboard.html</div>
+                    <div class="file-desc">Main application (dashboard, tasks, referrals, profile tabs)</div>
+                </div>
+                <div class="file-item">
+                    <div class="file-name">📄 admin.html</div>
+                    <div class="file-desc">Admin control panel</div>
+                </div>
+                <div class="file-item">
+                    <div class="file-name">⚙️ firebase-config.js</div>
+                    <div class="file-desc">Firebase configuration (YOU MUST UPDATE THIS)</div>
+                </div>
+                <div class="file-item">
+                    <div class="file-name">🔐 auth.js</div>
+                    <div class="file-desc">Authentication (login/signup logic)</div>
+                </div>
+                <div class="file-item">
+                    <div class="file-name">💾 database.js</div>
+                    <div class="file-desc">Firebase database operations and endpoints</div>
+                </div>
+                <div class="file-item">
+                    <div class="file-name">🎯 app.js</div>
+                    <div class="file-desc">Dashboard & user features logic</div>
+                </div>
+                <div class="file-item">
+                    <div class="file-name">👨‍💼 admin.js</div>
+                    <div class="file-desc">Admin portal logic</div>
+                </div>
+                <div class="file-item">
+                    <div class="file-name">🎨 styles.css</div>
+                    <div class="file-desc">Complete application styling (beautiful gradients & colors)</div>
+                </div>
+                <div class="file-item">
+                    <div class="file-name">.env.example</div>
+                    <div class="file-desc">Environment configuration template</div>
+                </div>
+                <div class="file-item">
+                    <div class="file-name">📖 README.md</div>
+                    <div class="file-desc">Complete documentation</div>
+                </div>
+                <div class="file-item">
+                    <div class="file-name">⚡ QUICKSTART.md</div>
+                    <div class="file-desc">5-minute setup guide</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>✅ Setup Steps</h2>
+            <div class="setup-steps">
+                <div class="step">
+                    <span class="step-num">1</span>
+                    <strong>Create Firebase Project</strong>
+                    <div style="color: #666; font-size: 13px;">Go to console.firebase.google.com and create a new project</div>
+                </div>
+                <div class="step">
+                    <span class="step-num">2</span>
+                    <strong>Enable Authentication</strong>
+                    <div style="color: #666; font-size: 13px;">Enable Email/Password authentication in Firebase Console</div>
+                </div>
+                <div class="step">
+                    <span class="step-num">3</span>
+                    <strong>Create Realtime Database</strong>
+                    <div style="color: #666; font-size: 13px;">Create a Realtime Database in test mode</div>
+                </div>
+                <div class="step">
+                    <span class="step-num">4</span>
+                    <strong>Update firebase-config.js</strong>
+                    <div style="color: #666; font-size: 13px;">Copy your Firebase config values from Firebase Console</div>
+                </div>
+                <div class="step">
+                    <span class="step-num">5</span>
+                    <strong>Run Local Server</strong>
+                    <div style="color: #666; font-size: 13px;">Run: <code>python -m http.server 8000</code> in the SIKAPA folder</div>
+                </div>
+                <div class="step">
+                    <span class="step-num">6</span>
+                    <strong>Open in Browser</strong>
+                    <div style="color: #666; font-size: 13px;">Go to http://localhost:8000 in your browser</div>
+                </div>
+                <div class="step">
+                    <span class="step-num">7</span>
+                    <strong>Create Admin Account</strong>
+                    <div style="color: #666; font-size: 13px;">Sign up with the ADMIN_EMAIL from firebase-config.js</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Features Overview</h2>
+            
+            <h3 style="color: #667eea; margin: 20px 0 10px 0;">👥 User Features</h3>
+            <ul style="list-style-position: inside; color: #666;">
+                <li>✅ Secure login and signup</li>
+                <li>✅ Real-time balance and stats</li>
+                <li>✅ 5 tier system with 24-hour cooldown</li>
+                <li>✅ Deposit requests (admin approval)</li>
+                <li>✅ Withdrawal requests (admin approval)</li>
+                <li>✅ 5% referral commission system</li>
+                <li>✅ Referral sharing (WhatsApp, Facebook, Twitter)</li>
+                <li>✅ Transaction history</li>
+                <li>✅ Profile management</li>
+                <li>✅ Password change</li>
+            </ul>
+
+            <h3 style="color: #667eea; margin: 20px 0 10px 0;">👨‍💼 Admin Features</h3>
+            <ul style="list-style-position: inside; color: #666;">
+                <li>✅ Dashboard with key statistics</li>
+                <li>✅ Approve/reject deposits</li>
+                <li>✅ Approve/reject withdrawals</li>
+                <li>✅ View all users</li>
+                <li>✅ View all transactions</li>
+                <li>✅ Filter by status</li>
+                <li>✅ Real-time analytics</li>
+            </ul>
+        </div>
+
+        <div class="section" style="text-align: center; padding: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; color: white;">
+            <h2 style="color: white; border: none; padding: 0;">Ready to Get Started?</h2>
+            <p style="margin: 10px 0;">Complete the 7 setup steps above, then click "Login" below!</p>
+            <a href="index.html" style="display: inline-block; background: white; color: #667eea; padding: 15px 40px; border-radius: 8px; text-decoration: none; font-weight: 600; margin-top: 15px;">🚀 Go to Login</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdraw - SIKAPA</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="withdraw-page">
+    <div class="withdraw-container">
+        <!-- Header -->
+        <div class="page-header">
+            <button class="btn-back" onclick="goBack()">← Back</button>
+            <h1>💰 Withdraw</h1>
+            <div style="width: 40px;"></div>
+        </div>
+
+        <!-- Page Content -->
+        <div class="page-content">
+            <form id="withdrawForm" class="withdraw-form">
+                <div class="form-section">
+                    <p class="card-label">Withdrawable Amount</p>
+                    <h3 id="withdrawableDisplay" style="font-size: 28px; color: #8a2be2; margin: 10px 0;">₵ 0.00</h3>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="withdrawMomoNumber">Mobile Money Number *</label>
+                        <input type="tel" id="withdrawMomoNumber" placeholder="e.g. 1234567890" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="withdrawMomoName">Mobile Money Name *</label>
+                        <input type="text" id="withdrawMomoName" placeholder="Enter your account name" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="networkProvider">Network Provider *</label>
+                        <select id="networkProvider" required>
+                            <option value="">Select Network</option>
+                            <option value="mtn">MTN</option>
+                            <option value="vodafone">Vodafone</option>
+                            <option value="airteltig">Airtel/TiG</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <label for="withdrawAmount">Amount * (₵)</label>
+                        <input type="number" id="withdrawAmount" min="1" step="0.01" placeholder="Enter amount to withdraw" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Withdraw</button>
+                <p id="withdrawError" class="error"></p>
+                <p id="withdrawSuccess" class="success"></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="database.js"></script>
+    <script>
+        let currentUser = null;
+
+        firebase.auth().onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = 'index.html';
+            }
+            currentUser = user;
+            if (user) {
+                loadWithdrawableAmount();
+            }
+        });
+
+        function goBack() {
+            window.location.href = 'dashboard.html';
+        }
+
+        async function loadWithdrawableAmount() {
+            try {
+                const userData = await getAdminData(currentUser.uid);
+                const withdrawableAmount = userData.withdrawableAmount || 0;
+                document.getElementById('withdrawableDisplay').textContent = '₵ ' + withdrawableAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            } catch (error) {
+                console.error('Error loading withdrawable amount:', error);
+                document.getElementById('withdrawableDisplay').textContent = '₵ 0.00';
+            }
+        }
+
+        document.getElementById('withdrawForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const amount = parseFloat(document.getElementById('withdrawAmount').value);
+            const momoNumber = document.getElementById('withdrawMomoNumber').value;
+            const momoName = document.getElementById('withdrawMomoName').value;
+            const network = document.getElementById('networkProvider').value;
+
+            try {
+                const userData = await getAdminData(currentUser.uid);
+                const withdrawableAmount = userData.withdrawableAmount || 0;
+
+                if (amount > withdrawableAmount) {
+                    throw new Error(`Insufficient funds. Available: ₵${withdrawableAmount.toFixed(2)}`);
+                }
+                if (amount < 1) {
+                    throw new Error('Minimum withdrawal amount is ₵1');
+                }
+
+                const withdrawalData = {
+                    userId: currentUser.uid,
+                    amount: amount,
+                    momoNumber: momoNumber,
+                    momoName: momoName,
+                    network: network,
+                    timestamp: new Date().toISOString(),
+                    status: 'pending'
+                };
+
+                console.log('Submitting withdrawal:', withdrawalData);
+
+                // For now, just show success - in production would send to backend
+                document.getElementById('withdrawSuccess').textContent = '✓ Withdrawal request submitted successfully!';
+                document.getElementById('withdrawError').textContent = '';
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
+            } catch (error) {
+                document.getElementById('withdrawError').textContent = error.message;
+                document.getElementById('withdrawSuccess').textContent = '';
+            }
+        });
+    </script>
+</body>
+</html>

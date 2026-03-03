@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIKAPA - Admin Portal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-page">
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <div class="admin-sidebar">
+            <div class="admin-logo">
+                <h2>💎 SIKAPA Admin</h2>
+            </div>
+            <nav class="admin-nav">
+                <button class="admin-nav-btn active" data-admin-tab="dashboard">Dashboard</button>
+                <button class="admin-nav-btn" data-admin-tab="deposits">Deposits</button>
+                <button class="admin-nav-btn" data-admin-tab="withdrawals">Withdrawals</button>
+                <button class="admin-nav-btn" data-admin-tab="cashouts">Cashouts</button>
+                <button class="admin-nav-btn" data-admin-tab="users">Users</button>
+                <button class="admin-nav-btn" data-admin-tab="transactions">Transactions</button>
+            </nav>
+            <button class="btn btn-danger btn-block" onclick="adminLogout()">Logout</button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="admin-main">
+            <div class="admin-header">
+                <h1>Dashboard</h1>
+                <span id="adminUserName">Admin</span>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="admin-tab-content active">
+                <div class="admin-stats-grid">
+                    <div class="admin-stat-card">
+                        <p class="stat-label">Total Deposits</p>
+                        <h3 id="totalDeposits" class="stat-number">0</h3>
+                        <p class="stat-detail">₵ <span id="totalDepositsAmount">0.00</span></p>
+                    </div>
+                    <div class="admin-stat-card">
+                        <p class="stat-label">Pending Deposits</p>
+                        <h3 id="pendingDeposits" class="stat-number">0</h3>
+                        <p class="stat-detail">₵ <span id="pendingDepositsAmount">0.00</span></p>
+                    </div>
+                    <div class="admin-stat-card">
+                        <p class="stat-label">Total Withdrawals</p>
+                        <h3 id="totalWithdrawals" class="stat-number">0</h3>
+                        <p class="stat-detail">₵ <span id="totalWithdrawalsAmount">0.00</span></p>
+                    </div>
+                    <div class="admin-stat-card">
+                        <p class="stat-label">Pending Withdrawals</p>
+                        <h3 id="pendingWithdrawals" class="stat-number">0</h3>
+                        <p class="stat-detail">₵ <span id="pendingWithdrawalsAmount">0.00</span></p>
+                    </div>
+                    <div class="admin-stat-card">
+                        <p class="stat-label">Total Cashouts</p>
+                        <h3 id="totalCashouts" class="stat-number">0</h3>
+                        <p class="stat-detail">₵ <span id="totalCashoutsAmount">0.00</span></p>
+                    </div>
+                    <div class="admin-stat-card">
+                        <p class="stat-label">Pending Cashouts</p>
+                        <h3 id="pendingCashouts" class="stat-number">0</h3>
+                        <p class="stat-detail">₵ <span id="pendingCashoutsAmount">0.00</span></p>
+                    </div>
+                    <div class="admin-stat-card">
+                        <p class="stat-label">Total Users</p>
+                        <h3 id="totalUsers" class="stat-number">0</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deposits Tab -->
+            <div id="deposits" class="admin-tab-content">
+                <h2>Deposit Requests</h2>
+                <div class="filter-section">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="pending">Pending</button>
+                    <button class="filter-btn" data-filter="approved">Approved</button>
+                    <button class="filter-btn" data-filter="rejected">Rejected</button>
+                </div>
+                <div id="depositsTable" class="admin-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Amount</th>
+                                <th>Method</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="depositsTableBody">
+                            <!-- Data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Withdrawals Tab -->
+            <div id="withdrawals" class="admin-tab-content">
+                <h2>Withdrawal Requests</h2>
+                <div class="filter-section">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="pending">Pending</button>
+                    <button class="filter-btn" data-filter="approved">Approved</button>
+                    <button class="filter-btn" data-filter="rejected">Rejected</button>
+                </div>
+                <div id="withdrawalsTable" class="admin-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Amount</th>
+                                <th>Method</th>
+                                <th>Mobile</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="withdrawalsTableBody">
+                            <!-- Data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Cashouts Tab -->
+            <div id="cashouts" class="admin-tab-content">
+                <h2>Cashout Requests</h2>
+                <div class="filter-section">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="pending">Pending</button>
+                    <button class="filter-btn" data-filter="approved">Approved</button>
+                    <button class="filter-btn" data-filter="rejected">Rejected</button>
+                </div>
+                <div id="cashoutsTable" class="admin-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Email</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cashoutsTableBody">
+                            <!-- Data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Users Tab -->
+            <div id="users" class="admin-tab-content">
+                <h2>Users</h2>
+                <div class="search-section">
+                    <input type="text" id="userSearch" placeholder="Search user by name or email...">
+                </div>
+                <div id="usersTable" class="admin-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>User ID</th>
+                                <th>Balance</th>
+                                <th>Member Since</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Transactions Tab -->
+            <div id="transactions" class="admin-tab-content">
+                <h2>All Transactions</h2>
+                <div id="transactionsTable" class="admin-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionsTableBody">
+                            <!-- Data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Approval Modal -->
+    <div id="approvalModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="approvalTitle">Approve Request</h2>
+                <button class="modal-close" onclick="closeApprovalModal()">×</button>
+            </div>
+            <div id="approvalDetails"></div>
+            <div class="modal-actions">
+                <button class="btn btn-success" onclick="approveRequest()">Approve</button>
+                <button class="btn btn-danger" onclick="rejectRequest()">Reject</button>
+                <button class="btn btn-outline" onclick="closeApprovalModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="database.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
