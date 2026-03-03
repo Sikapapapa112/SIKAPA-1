@@ -1,0 +1,18 @@
+{
+  "name": "sikapa",
+  "version": "1.0.0",
+  "description": "SIKAPA - Earn Rewards Platform",
+  "main": "backend/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "cd backend && npm run dev",
+    "build": "cd backend && npm install",
+    "dev": "cd backend && npm run dev"
+  },
+  "keywords": ["sikapa", "rewards", "earning"],
+  "author": "SIKAPA Team",
+  "license": "MIT",
+  "engines": {
+    "node": "18.x"
+  }
+}
